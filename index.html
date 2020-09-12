@@ -1,0 +1,164 @@
+<!doctype HTML>
+<html>
+    <head>
+        <title>My awesome todo application</title>
+        <link href="css/site.css" rel="stylesheet"/>
+         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+         <link href="css/site.css" rel="stylesheet"/>
+        <meta name='viewport' content='width=device-width, initial-scale=1'> -->
+        <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+         <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    </head>
+    <body>
+      <div class="container main">
+        <div class="row">
+          <nav class="navbar navbar-expand-sm bg-dark">
+          <div class="nav-item">
+            <h1 class="todo-header">TODOER</h1>
+          </div>
+        </nav>
+    
+          <h3>What do you want to do today?</h3>
+        </div>
+        
+        <div class="row mt-10">
+          <form>
+            <input class="field" id="todo" type="text" placeholder="add todo"/>
+            <button class="add" onclick="todoApp.addTodo()" type="button"><i class="fa fa-plus"></i> </button><br>
+          </form>
+        </div>
+        <div class="row1 mt-15">
+          <input  size="50px" type="text" id="filterInput" placeholder="search"/><button><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+        <div class="all">
+          <input type="checkbox" id="myCheck" name="selectall" value="selectall" onchange="todoApp.selectAll(this)">Select All</input>
+          <select  name="list" id="listitem" onchange="todoApp.changeAll()">
+            <option selected>Select</option>
+            <option value="completed">Completed</option>
+            <option value="in-progress">In-progress</option>
+            <option value="on-hold">On-hold</option>
+          </select>
+          
+              <input type="radio" id="all " name="status" value="all" onclick="todoApp.all()">All</>
+              <input type="radio" id="completed" name="status" value="complete" onclick="todoApp.completed()">Complete</>
+              <input type="radio" id="on-hold" name="status" value="on-hold" onclick="todoApp.onHold()">On-hold</>
+              <input type="radio" id="favorite" name="status" value="favorite" onclick="todoApp.filterFav()">Favorite</>
+        </div>
+        <div class="row3">
+          
+            <ul id="todos">
+            </ul>
+        </div>
+        <div id="pagination">
+        </div>
+      </div>
+      <div id="dialog">
+
+      </div>
+      
+      <script src="app/services/todo.service.js" type="application/javascript"></script>  
+      <script src="app/pagination.js" type="application/javascript"></script>
+      <script src="app/todo.js" type="application/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script>
+                let filterInput = document.getElementById('filterInput');
+                filterInput.addEventListener('keyup', filterNames);
+                function filterNames(){
+                  let filterValue = document.getElementById('filterInput').value.toUpperCase();
+                  let ul = document.getElementById('todos');
+                  let li = ul.querySelectorAll('li.collection-item');
+                  for(let i = 0;i < li.length;i++){
+                    let a = li[i].getElementsByTagName('a')[0];
+                    if(a.innerHTML.toUpperCase().indexOf(filterValue) > -1){
+                      li[i].style.display = '';
+                    } else {
+                      li[i].style.display = 'none';
+                    }
+                  }
+                }
+
+                function recordsPerPages(records){
+   
+                  var selectedValue = records.value;
+                  console.log(selectedValue);
+                  localStorage.setItem('key',selectedValue);
+                  window.location.reload();
+                  // todoApp.render();
+                }
+
+
+                // let dvalues = document.getElementById('todos');
+
+                
+                // document.getElementById("records").addEventListener("change",recordsPerPages);
+                // function recordsPerPages() {
+                //   var x = document.getElementById("records");
+                //   var selectedValue = x.value;
+                //   console.log(selectedValue);
+                //   // localStorage.setItem('key',selectedValue);
+                // }
+                // !function() {
+                //   var setItem = Storage.prototype.setItem;
+
+                //   Storage.prototype.setItem = function() {
+                //     setItem.apply(this, arguments);
+                //     location.reload();
+                //   };
+                // }();
+                // window.addEventListener('storage', function(e) {  
+                //     // Some storage value changed. Reload tab!
+                    
+                // });
+                // window.addEventListener('storage', function(e) {  
+                //     var x = +localStorage.getItem('key');
+                // });
+
+                
+
+                $('select#a').on('change', function() {
+                      var val_ = $('#a :selected').text();
+                      $('.child-changed option').map(function() {
+                      $(this).text(val_);
+                        $(this).value=val_;
+                      });
+                  });
+               
+ 
+
+                document.getElementById('myCheck').onclick = function() {
+                  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                  for (var checkbox of checkboxes) {
+                    checkbox.checked = this.checked;
+                    sessionStorage.setItem('checked',checkbox.checked);
+                  }
+                }
+
+                // $('#a').change(function(){
+                //     $("#b option").eq($(this).find(':selected').index()).prop('selected',true);
+                // });
+
+                // function change() {
+                //         if (document.getElementById('a').value == '1'){
+                //           document.getElementById("b").value = 'completed';
+                //         }
+                //         else if (document.getElementById('a').value == '2'){
+                //           document.getElementById("b").value = 'Inprogress';
+                //         }
+                //         else if (document.getElementById('a').value == '3'){
+                //           document.getElementById("b").value = 'Onhold';
+                //         }
+                        
+                // };
+                // window.onload=function() { 
+                //     document.getElementById("myCheck1").onchange=function() {
+                //       document.getElementById("myCheck").value=this.options[this.selectedIndex].getAttribute("data-sync"); 
+                //     }
+                //     document.getElementById("myCheck1").onchange(); // trigger when loading
+                //   }
+
+      </script>
+      
+    </body>
+</html>
